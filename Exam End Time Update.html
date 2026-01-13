@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2487.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;ATS Exam Time Adjustment Calculator&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-family: Arial, sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>max-width: 520px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 20px auto;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>label {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: bold;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>button {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.result {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid #ccc;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #f9f9f9;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.notes {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #eef5ff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid #aac4ff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>white-space: pre-wrap;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;h2&gt;ATS Exam End-Time Calculator&lt;/h2&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;label&gt;Exam Start Time&lt;/label&gt;</p>
+<p class="p1">&lt;input type="time" id="startTime"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;label&gt;Total Allotted Minutes (includes all breaks)&lt;/label&gt;</p>
+<p class="p1">&lt;input type="number" id="totalMinutes" placeholder="e.g. 105"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;label&gt;Total Approved Break Minutes&lt;/label&gt;</p>
+<p class="p1">&lt;input type="number" id="approvedBreaks" placeholder="e.g. 15"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;label&gt;Break Minutes Taken&lt;/label&gt;</p>
+<p class="p1">&lt;input type="number" id="breaksTaken" placeholder="e.g. 6"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;button onclick="calculateEndTime()"&gt;Calculate Adjusted End Time&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="result" id="output"&gt;&lt;/div&gt;</p>
+<p class="p1">&lt;div class="notes" id="notesOutput"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1">function formatTime(date) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return date.toLocaleTimeString([], {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>hour: 'numeric',</p>
+<p class="p1"><span class="Apple-converted-space">    </span>minute: '2-digit',</p>
+<p class="p1"><span class="Apple-converted-space">    </span>hour12: true</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function calculateEndTime() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const startTime = document.getElementById("startTime").value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const totalMinutes = parseInt(document.getElementById("totalMinutes").value);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const approvedBreaks = parseInt(document.getElementById("approvedBreaks").value);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const breaksTaken = parseInt(document.getElementById("breaksTaken").value);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!startTime || isNaN(totalMinutes) || isNaN(approvedBreaks) || isNaN(breaksTaken)) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("output").innerText = "Please fill out all fields.";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("notesOutput").innerText = "";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (breaksTaken &gt; approvedBreaks) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("output").innerText =</p>
+<p class="p1"><span class="Apple-converted-space">      </span>"Break minutes taken cannot exceed approved break minutes.";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("notesOutput").innerText = "";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [hours, minutes] = startTime.split(":").map(Number);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const startDate = new Date();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>startDate.setHours(hours, minutes, 0, 0);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const scheduledEnd = new Date(startDate.getTime() + totalMinutes * 60000);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const unusedBreaks = approvedBreaks - breaksTaken;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const adjustedEnd = new Date(scheduledEnd.getTime() - unusedBreaks * 60000);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("output").innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;strong&gt;Exam Start Time:&lt;/strong&gt; ${formatTime(startDate)}&lt;br&gt;&lt;br&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;strong&gt;Scheduled End Time (maximum, with all breaks):&lt;/strong&gt;&lt;br&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>${formatTime(scheduledEnd)}&lt;br&gt;&lt;br&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;strong&gt;Break Minutes Taken:&lt;/strong&gt; ${breaksTaken}&lt;br&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;strong&gt;Unused Break Minutes:&lt;/strong&gt; ${unusedBreaks}&lt;br&gt;&lt;br&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;strong&gt;Adjusted End Time (enter in RegisterBlast):&lt;/strong&gt;&lt;br&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>${formatTime(adjustedEnd)}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("notesOutput").innerText =</p>
+<p class="p1">`RegisterBlast Note:</p>
+<p class="p1">Student approved for ${approvedBreaks} minutes of breaks.</p>
+<p class="p1">Student took ${breaksTaken} minutes of breaks.</p>
+<p class="p1">Unused break time (${unusedBreaks} minutes) was removed from the scheduled exam time.</p>
+<p class="p1">Exam end time adjusted accordingly.`;</p>
+<p class="p1">}</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
