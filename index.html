@@ -1,99 +1,148 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Exam Time Calculator with Breaks</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 500px;
-            margin: 40px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-        }
-        input {
-            width: 100%;
-            margin: 8px 0;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        button {
-            padding: 10px 16px;
-            font-size: 16px;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 10px;
-            background: #f3f3f3;
-            border-radius: 6px;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>ATS Exam Time & Break Calculator</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 720px;
+    margin: 30px auto;
+    padding: 20px;
+  }
+  h1 {
+    margin-bottom: 5px;
+  }
+  .subtitle {
+    color: #555;
+    margin-bottom: 20px;
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+  input, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+  }
+  button {
+    margin-top: 25px;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .results {
+    margin-top: 30px;
+    padding: 18px;
+    border: 1px solid #ccc;
+    background: #fafafa;
+  }
+  .results p {
+    margin: 8px 0;
+  }
+  hr {
+    margin: 15px 0;
+  }
+</style>
 </head>
 <body>
 
-    <h2>Exam End Time Calculator</h2>
+<h1>ATS Exam Time & Break Calculator</h1>
+<div class="subtitle">
+  Calculates exam timing using professor-set duration, time extensions, and ATS-approved break accommodations.
+</div>
 
-    <label>Start Time:</label>
-    <input type="time" id="startTime">
+<label>Exam Start Time</label>
+<input type="time" id="startTime">
 
-    <label>Exam Duration (minutes):</label>
-    <input type="number" id="examMins" placeholder="e.g. 120" min="0">
+<label>Exam Duration (minutes — as set by professor)</label>
+<input type="number" id="profDuration" min="1">
 
-    <label>Extra Time Multiplier:</label>
-    <input type="number" step="0.1" id="extraMultiplier" placeholder="e.g. 1.5" min="1">
+<label>Time Extension Multiplier (e.g., 1.5, 2.0)</label>
+<input type="number" id="multiplier" step="0.1" value="1">
 
-    <label>Break Time (minutes):</label>
-    <input type="number" id="breakMins" placeholder="e.g. 15" min="0">
+<label>Break Accommodation Type</label>
+<select id="breakType">
+  <option value="none">No Break Accommodation</option>
+  <option value="short">Short Breaks (5 minutes every 30 minutes)</option>
+  <option value="needed">Breaks As Needed</option>
+</select>
 
-    <button onclick="calculateEndTime()">Calculate</button>
+<button onclick="calculate()">Calculate Exam Timing</button>
 
-    <div class="result" id="resultNoBreaks"></div>
-    <div class="result" id="resultWithBreaks"></div>
+<div class="results" id="results" style="display:none;"></div>
 
-    <script>
-        function calculateEndTime() {
-            const startTime = document.getElementById("startTime").value;
-            const examMins = parseInt(document.getElementById("examMins").value) || 0;
-            const extraMultiplier = parseFloat(document.getElementById("extraMultiplier").value) || 1;
-            const breakMins = parseInt(document.getElementById("breakMins").value) || 0;
+<script>
+function calculate() {
+  const startTime = document.getElementById("startTime").value;
+  const profDuration = Number(document.getElementById("profDuration").value);
+  const multiplier = Number(document.getElementById("multiplier").value);
+  const breakType = document.getElementById("breakType").value;
 
-            if (!startTime) {
-                alert("Please enter a start time.");
-                return;
-            }
+  if (!startTime || !profDuration || !multiplier) {
+    alert("Please complete all fields.");
+    return;
+  }
 
-            // convert start time into Date object
-            const [hh, mm] = startTime.split(":").map(Number);
-            const startDate = new Date();
-            startDate.setHours(hh, mm, 0, 0);
+  /* =========================
+     STEP 1: Exam Time
+     ========================= */
+  const totalExamMinutes = Math.round(profDuration * multiplier);
 
-            // compute total times
-            const durationNoBreaks = examMins * extraMultiplier;
-            const durationWithBreaks = durationNoBreaks + breakMins;
+  /* =========================
+     STEP 2: Break Time
+     ========================= */
+  let totalBreakMinutes = 0;
 
-            // calc end times
-            const endNoBreak = new Date(startDate.getTime() + durationNoBreaks * 60000);
-            const endWithBreak = new Date(startDate.getTime() + durationWithBreaks * 60000);
+  if (breakType === "short") {
+    totalBreakMinutes = Math.floor(totalExamMinutes / 30) * 5;
+  }
 
-            // format time
-            function formatTime(d) {
-                let h = d.getHours();
-                let m = d.getMinutes();
-                const suffix = h >= 12 ? "PM" : "AM";
-                h = ((h + 11) % 12) + 1; // convert 24 -> 12 hour
-                return `${h}:${m.toString().padStart(2, "0")} ${suffix}`;
-            }
+  if (breakType === "needed") {
+    totalBreakMinutes = Math.round(profDuration * 0.5);
+  }
 
-            // show results
-            document.getElementById("resultNoBreaks").innerText =
-                `End Time (No Breaks): ${formatTime(endNoBreak)}`;
+  /* =========================
+     STEP 3: Time Calculations
+     ========================= */
+  const [hour, minute] = startTime.split(":").map(Number);
+  const startDate = new Date();
+  startDate.setHours(hour, minute, 0, 0);
 
-            document.getElementById("resultWithBreaks").innerText =
-                `End Time (With Breaks): ${formatTime(endWithBreak)}`;
-        }
-    </script>
+  const endWithoutBreaks = new Date(startDate.getTime() + totalExamMinutes * 60000);
+  const endWithBreaks = new Date(startDate.getTime() + (totalExamMinutes + totalBreakMinutes) * 60000);
+
+  function formatTimeAMPM(date) {
+    return date.toLocaleTimeString([], {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+  }
+
+  document.getElementById("results").style.display = "block";
+  document.getElementById("results").innerHTML = `
+    <p><strong>Total Exam Time (Work Time Only):</strong> ${totalExamMinutes} minutes</p>
+    <p><strong>Total Break Minutes Allowed:</strong> ${totalBreakMinutes} minutes</p>
+
+    <hr>
+
+    <p><strong>Exam Start Time:</strong> ${formatTimeAMPM(startDate)}</p>
+    <p><strong>End Time Without Breaks:</strong> ${formatTimeAMPM(endWithoutBreaks)}</p>
+    <p><strong>End Time With Breaks (Latest Possible End Time):</strong> ${formatTimeAMPM(endWithBreaks)}</p>
+
+    <hr>
+
+    <p style="font-size: 0.9em; color: #555;">
+      • Break time cannot be used to work on the exam.<br>
+      • Unused break minutes will shorten the appointment end time.<br>
+      • Full exam time is always preserved.
+    </p>
+  `;
+}
+</script>
 
 </body>
 </html>
-
